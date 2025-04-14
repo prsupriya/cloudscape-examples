@@ -18,8 +18,13 @@ export default function NavigationPanel() {
     const items: SideNavigationProps.Item[] = [
       {
         type: "link",
-        text: "Chat",
-        href: "/",
+        text: "Architecture - Assess",
+        href: "/assess",
+      },
+      {
+        type: "link",
+        text: "Architecture - Design",
+        href: "/design",
       },
     ];
 

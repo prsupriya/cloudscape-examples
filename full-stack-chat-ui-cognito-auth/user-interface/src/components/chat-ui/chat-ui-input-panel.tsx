@@ -8,6 +8,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { ChatScrollState } from "./chat-ui";
 import { ChatMessage } from "./types";
+import FileUploadComponent from './chat-ui-fileupload';
 import styles from "../../styles/chat-ui.module.scss";
 
 export interface ChatUIInputPanelProps {
@@ -15,11 +16,20 @@ export interface ChatUIInputPanelProps {
   sendButtonText?: string;
   running?: boolean;
   messages?: ChatMessage[];
-  onSendMessage?: (message: string) => void;
+  onSendMessage?: (message: string, file?: File | null) => void;
 }
 
 export default function ChatUIInputPanel(props: ChatUIInputPanelProps) {
   const [inputText, setInputText] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  
+  const handleFileSelect = (file: File) => {
+    setSelectedFile(file);
+  };
+
+  const handleFileRemove = () => {
+    setSelectedFile(null);
+  };
 
   useEffect(() => {
     const onWindowScroll = () => {
@@ -68,6 +78,7 @@ export default function ChatUIInputPanel(props: ChatUIInputPanelProps) {
     ChatScrollState.userHasScrolled = false;
     props.onSendMessage?.(inputText);
     setInputText("");
+    setSelectedFile(null);
   };
 
   const onTextareaKeyDown = (
@@ -82,7 +93,18 @@ export default function ChatUIInputPanel(props: ChatUIInputPanelProps) {
   return (
     <SpaceBetween direction="vertical" size="l">
       <Container>
+        {selectedFile && (
+          <div style={{ marginLeft: '8px', fontSize: '0.8rem' }}>
+            Selected File: {selectedFile.name}
+          </div>
+        )}
         <div className={styles.input_textarea_container}>
+          <FileUploadComponent
+            onFileSelect={handleFileSelect}
+            onFileRemove={handleFileRemove}
+            acceptedFileTypes="image/*,.pdf,.doc,.docx"
+            maxFileSizeMB={10}
+          />
           <TextareaAutosize
             className={styles.input_textarea}
             maxRows={6}

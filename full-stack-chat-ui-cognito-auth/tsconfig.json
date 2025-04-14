@@ -20,12 +20,18 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
+    "jsx": "react-jsx",
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types", 
+      "./src/types"
     ]
   },
   "exclude": [
     "node_modules",
     "cdk.out"
+  ],
+  "include": [
+    "src/**/*",
+    "src/types/*.d.ts"
   ]
 }

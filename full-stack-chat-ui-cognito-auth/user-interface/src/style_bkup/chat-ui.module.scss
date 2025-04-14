@@ -67,6 +67,16 @@
   font-size: 1rem;
 }
 
+.fileUploadContainer {
+  margin-bottom: 8px;
+  
+  .errorText {
+    color: #d91515;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+}
+
 .btn_chabot_message_copy {
   float: right;
 }

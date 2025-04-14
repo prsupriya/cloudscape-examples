@@ -13,7 +13,7 @@ export interface ChatUIProps {
   inputPlaceholderText?: string;
   sendButtonText?: string;
   renderExpandableContent?:(message:ChatMessage) => ReactElement | undefined;
-  onSendMessage?: (message: string) => void;
+  onSendMessage?: (message: string, file?: File | null) => void;
   onSendFeedback?: (feedback: string, message: ChatMessage) => void;
 }
 
