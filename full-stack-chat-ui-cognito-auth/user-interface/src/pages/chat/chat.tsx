@@ -225,8 +225,9 @@ export default function Chat() {
                 placeholder="Ask a question"
                 autoFocus
                 disableSecondaryActionsPaddings
+                controlId="chat-prompt-input"
                 secondaryActions={
-                !isAssessPath && (
+                isAssessPath && (
                     <Box padding={{ left: 'xxs', top: 'xs' }}>
                       <FileInput
                         ariaLabel="Chat file input"

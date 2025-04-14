@@ -22,6 +22,11 @@
   }
 }
 
+#chat-prompt-input {
+  min-height: 80px !important;
+}
+
+
 .messages {
   display: flex;
   flex-direction: column;
