@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@cloudscape-design/components": "^3.0.946",
+    "aws-cdk-lib": "^2.189.1",
+    "constructs": "^10.4.2"
+  }
+}

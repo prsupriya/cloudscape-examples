@@ -1,0 +1,61 @@
+{
+  "name": "cloudscape-cdk-app",
+  "version": "0.1.0",
+  "bin": {
+    "fullstack-vite-cdk-cognito-auth": "bin/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "format": "npx prettier --ignore-path .gitignore --write \"**/*.+(tsx|js|ts|json)\""
+  },
+  "devDependencies": {
+    "@cloudscape-design/board-components": "^3.0.0",
+    "@cloudscape-design/browser-test-tools": "^3.0.0",
+    "@cloudscape-design/chat-components": "^1.0.0",
+    "@cloudscape-design/code-view": "^3.0.0",
+    "@cloudscape-design/collection-hooks": "^1.0.0",
+    "@cloudscape-design/component-toolkit": "^1.0.0-beta",
+    "@cloudscape-design/components": "^3.0.946",
+    "@cloudscape-design/design-tokens": "^3.0.55",
+    "@cloudscape-design/global-styles": "^1.0.0",
+    "@cloudscape-design/test-utils-core": "^1.0.0",
+    "@cloudscape-design/theming-runtime": "^1.0.0",
+    "@types/jest": "^29.5.11",
+    "@types/node": "20.11.6",
+    "aws-cdk": "2.137.0",
+    "jest": "^29.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.86.3",
+    "sass-loader": "^16.0.5",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "typescript-plugin-css-modules": "^5.1.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0",
+    "zod": "^3.24.2"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-apigatewayv2-alpha": "^2.114.1-alpha.0",
+    "@aws-cdk/aws-cognito-identitypool-alpha": "^2.137.0-alpha.0",
+    "@aws-cdk/aws-lambda-python-alpha": "^2.137.0-alpha.0",
+    "@cloudscape-design/board-components": "^3.0.0",
+    "@cloudscape-design/browser-test-tools": "^3.0.0",
+    "@cloudscape-design/chat-components": "^1.0.35",
+    "@cloudscape-design/code-view": "^3.0.0",
+    "@cloudscape-design/collection-hooks": "^1.0.0",
+    "@cloudscape-design/component-toolkit": "^1.0.0-beta",
+    "@cloudscape-design/global-styles": "^1.0.0",
+    "@cloudscape-design/test-utils-core": "^1.0.0",
+    "@cloudscape-design/theming-runtime": "^1.0.0",
+    "aws-cdk-lib": "^2.189.1",
+    "constructs": "^10.4.2",
+    "source-map-support": "^0.5.21"
+  }
+}
