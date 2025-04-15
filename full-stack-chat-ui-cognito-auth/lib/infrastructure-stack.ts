@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import * as iam from 'aws-cdk-lib/aws-iam'; 
 import * as path from "node:path";
 import {
   ExecSyncOptionsWithBufferEncoding,
@@ -34,6 +35,29 @@ export class InfrastructureStack extends cdk.Stack {
       websiteIndexDocument: "index.html",
       websiteErrorDocument: "index.html",
     });
+
+
+    // First, modify the user bucket definition
+    const userBucket = new s3.Bucket(this, "userBucket", {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      autoDeleteObjects: true,
+      cors: [
+        {
+          allowedMethods: [
+            s3.HttpMethods.GET,
+            s3.HttpMethods.POST,
+            s3.HttpMethods.PUT,
+            s3.HttpMethods.DELETE,
+          ],
+          allowedOrigins: ['*'],  // Restrict this to your domain in production
+          allowedHeaders: ['*'],
+          maxAge: 3000,
+        },
+      ],
+      encryption: s3.BucketEncryption.S3_MANAGED,
+    });
+
 
     const userPool = new cognito.UserPool(this, "UserPool", {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -103,6 +127,8 @@ export class InfrastructureStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
+
+    // lambda code
     const apiHandler = new lambdaPython.PythonFunction(this, "ApiHandler", {
       entry: path.join(__dirname, "../functions/api-handler"),
       runtime: lambda.Runtime.PYTHON_3_12,
@@ -115,8 +141,37 @@ export class InfrastructureStack extends cdk.Stack {
       environment: {
         X_ORIGIN_VERIFY_SECRET_ARN: xOriginVerifySecret.secretArn,
         ITEMS_TABLE_NAME: itemsTable.tableName,
+        S3_BUCKET_NAME: userBucket.bucketName,
       },
     });
+
+    userBucket.grantReadWrite(apiHandler); // This adds both read and write permissions
+
+    const lambdaRole = new iam.Role(this, 'ApiHandlerRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+    });
+
+    apiHandler.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'xray:PutTraceSegments',
+        'xray:PutTelemetryRecords',
+      ],
+      resources: ['*'],
+    }));
+
+
+    // Add S3 permissions
+    apiHandler.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        's3:PutObject',
+        's3:GetObject'
+      ],
+      resources: [
+        `${userBucket.bucketArn}/*`
+      ]
+    }));
 
     xOriginVerifySecret.grantRead(apiHandler);
     itemsTable.grantReadWriteData(apiHandler);
