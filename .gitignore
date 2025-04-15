@@ -538,3 +538,12 @@ $RECYCLE.BIN/
 .cdk.staging
 cdk.out
 aws-exports.json
+
+# Lambda layer build artifacts
+lambda-layer/opt/
+lambda-layer/layer.zip
+lambda-layer/python/
+
+# Build directories
+dist/
+build/

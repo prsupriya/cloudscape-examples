@@ -3,6 +3,7 @@ import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { InfrastructureStack } from "./stacks/input-infrastructure-stack";
 import { DiagramGeneratorStack } from './stacks/output-stack';
+import { LambdaStack } from './stacks/lambda-stack';
 //import { BedrockStack } from './stacks/bedrock-stack';
 
 
@@ -21,6 +22,7 @@ const app = new cdk.App();
 });
 
 new DiagramGeneratorStack(app, 'DiagramGeneratorStack');
+new LambdaStack(app, 'LambdaStack');
 
 //new BedrockStack(app, 'BedrockStack');
 
