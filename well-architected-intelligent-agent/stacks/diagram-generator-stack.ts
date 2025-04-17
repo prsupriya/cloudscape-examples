@@ -18,7 +18,7 @@ export class DiagramGeneratorStack extends cdk.Stack {
       versioned: true,
       lifecycleRules: [
         {
-          expiration: cdk.Duration.days(7), // Automatically delete files after 7 days
+          expiration: cdk.Duration.days(1), // Automatically delete files after 7 days
         },
       ],
     });
