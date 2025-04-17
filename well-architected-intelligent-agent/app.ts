@@ -25,7 +25,7 @@ new DiagramGeneratorStack(app, 'DiagramGeneratorStack');
 
 // Create the Lambda stack and pass the bucket reference
 const lambdaStack = new LambdaStack(app, 'LambdaStack', {
-  userBucket: infrastructureStack.userBucket
+ // userBucket: infrastructureStack.userBucket
 });
 
 //new BedrockStack(app, 'BedrockStack');

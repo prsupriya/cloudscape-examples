@@ -43,8 +43,7 @@ export class DiagramGeneratorStack extends cdk.Stack {
         PATH: '/opt/bin:/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin',
         LD_LIBRARY_PATH: '/opt/lib',
         PYTHONPATH: '/opt/python',  // Add this to ensure Python can find the modules
-        GVCONFIG: '/opt/lib/graphviz',
-        BUCKET_NAME: diagramBucket.bucketName,
+        GVCONFIG: '/opt/lib/graphviz'
       },
       layers: [diagramLayer],
     });
