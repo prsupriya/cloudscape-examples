@@ -3,6 +3,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
+import * as path from "node:path";
 
 export class DiagramGeneratorStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -22,11 +23,11 @@ export class DiagramGeneratorStack extends cdk.Stack {
       ],
     });
 
-    // Create Lambda layer for Graphviz and other dependencies
+    // Create the Lambda layer
     const diagramLayer = new lambda.LayerVersion(this, 'DiagramLayer', {
-      code: lambda.Code.fromAsset('lambda-layer/opt'), 
-      description: 'Layer containing Graphviz and Python dependencies',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda-layer')),
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
+      description: 'Layer for diagram generation with graphviz',
     });
 
     // Create Lambda function
@@ -35,9 +36,15 @@ export class DiagramGeneratorStack extends cdk.Stack {
       code: lambda.Code.fromAsset('lambda/diagram-lambda'), 
       handler: 'index.lambda_handler',
       timeout: cdk.Duration.seconds(30),
+      architecture: lambda.Architecture.X86_64,
       memorySize: 512,
       environment: {
         S3_BUCKET_NAME: diagramBucket.bucketName,
+        PATH: '/opt/bin:/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin',
+        LD_LIBRARY_PATH: '/opt/lib',
+        PYTHONPATH: '/opt/python',  // Add this to ensure Python can find the modules
+        GVCONFIG: '/opt/lib/graphviz',
+        BUCKET_NAME: diagramBucket.bucketName,
       },
       layers: [diagramLayer],
     });

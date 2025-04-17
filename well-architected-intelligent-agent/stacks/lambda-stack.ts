@@ -2,10 +2,16 @@ import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as path from "node:path";
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 import { Construct } from 'constructs';
 
+interface LambdaStackProps extends cdk.StackProps {
+  userBucket: s3.IBucket; // Add bucket as a prop
+}
+
 export class LambdaStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props:LambdaStackProps) {
     super(scope, id, props);
 
     // ----- LLM Lambda --- // 
@@ -44,6 +50,15 @@ export class LambdaStack extends cdk.Stack {
       },
       tracing: lambda.Tracing.ACTIVE, // Enable X-Ray tracing
     });
+
+    // Add the S3 notification
+    props.userBucket.addEventNotification(
+      s3.EventType.OBJECT_CREATED_PUT,
+      new s3n.LambdaDestination(llmLambda)
+    );
+
+    // Grant read permissions to the Lambda
+    props.userBucket.grantRead(llmLambda);
 
     // Create URL for Lambda (optional)
     const functionUrl = llmLambda.addFunctionUrl({

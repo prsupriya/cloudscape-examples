@@ -22,6 +22,10 @@ import * as logs from "aws-cdk-lib/aws-logs";
 const lambdaArchitecture = lambda.Architecture.X86_64;
 
 export class InfrastructureStack extends cdk.Stack {
+
+  // Make the bucket public so other stacks can reference it
+  public readonly userBucket: s3.Bucket;
+
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -38,7 +42,7 @@ export class InfrastructureStack extends cdk.Stack {
 
 
     // user bucket for uploaded file. 
-    const userBucket = new s3.Bucket(this, "userBucket", {
+    this.userBucket = new s3.Bucket(this, "userBucket", {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       autoDeleteObjects: true,
@@ -144,11 +148,11 @@ export class InfrastructureStack extends cdk.Stack {
       environment: {
         X_ORIGIN_VERIFY_SECRET_ARN: xOriginVerifySecret.secretArn,
         ITEMS_TABLE_NAME: itemsTable.tableName,
-        S3_BUCKET_NAME: userBucket.bucketName,
+        S3_BUCKET_NAME: this.userBucket.bucketName,
       },
     });
 
-    userBucket.grantReadWrite(apiHandler); // This adds both read and write permissions
+    this.userBucket.grantReadWrite(apiHandler); // This adds both read and write permissions
 
     const lambdaRole = new iam.Role(this, 'ApiHandlerRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -172,7 +176,7 @@ export class InfrastructureStack extends cdk.Stack {
         's3:GetObject'
       ],
       resources: [
-        `${userBucket.bucketArn}/*`
+        `${this.userBucket.bucketArn}/*`
       ]
     }));
 

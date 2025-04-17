@@ -2,13 +2,13 @@
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { InfrastructureStack } from "./stacks/input-infrastructure-stack";
-import { DiagramGeneratorStack } from './stacks/output-stack';
+import { DiagramGeneratorStack } from './stacks/diagram-generator-stack';
 import { LambdaStack } from './stacks/lambda-stack';
 //import { BedrockStack } from './stacks/bedrock-stack';
 
 
 const app = new cdk.App();
- new InfrastructureStack(app, "ChatUiInfrastructureStack", {
+const infrastructureStack = new InfrastructureStack(app, "ChatUiInfrastructureStack", {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -22,7 +22,11 @@ const app = new cdk.App();
 });
 
 new DiagramGeneratorStack(app, 'DiagramGeneratorStack');
-new LambdaStack(app, 'LambdaStack');
+
+// Create the Lambda stack and pass the bucket reference
+const lambdaStack = new LambdaStack(app, 'LambdaStack', {
+  userBucket: infrastructureStack.userBucket
+});
 
 //new BedrockStack(app, 'BedrockStack');
 

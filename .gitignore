@@ -543,7 +543,13 @@ aws-exports.json
 lambda-layer/opt/
 lambda-layer/layer.zip
 lambda-layer/python/
+lambda-layer/bin/
+lambda-layer/lib/
+lambda-layer/build-lam
+lambda-layer/README.md
 
 # Build directories
 dist/
 build/
+
+ package-lock.json
