@@ -1,0 +1,9 @@
+flask
+werkzeug
+boto3
+diagrams
+aws-lambda-powertools
+pydantic
+gunicorn
+jq
+aws_xray_sdk

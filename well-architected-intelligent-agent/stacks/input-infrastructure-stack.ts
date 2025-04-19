@@ -60,10 +60,7 @@ export class InfrastructureStack extends cdk.Stack {
         },
       ],
       encryption: s3.BucketEncryption.S3_MANAGED,
-    });
-
-    //bucket for minigramer png 
-    
+    });    
 
 
     const userPool = new cognito.UserPool(this, "UserPool", {

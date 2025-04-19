@@ -1,0 +1,204 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "PDF Documentation Generator",
+      "description": "Generate PDF documentation from Markdown content with optional architecture diagram embedding",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "paths": {
+      "/generatePDFDocumentation": {
+        "post": {
+          "summary": "POST /generatePDFDocumentation",
+          "description": "Generate PDF documentation from Markdown content and optionally embed architecture diagrams",
+          "operationId": "generate_pdf_documentation_generatePDFDocumentation_post",
+          "parameters": [
+            {
+              "description": "S3 URI to architecture diagram to embed",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  }
+                ],
+                "title": "Link To Architecture",
+                "description": "S3 URI to architecture diagram to embed",
+                "nullable": true
+              },
+              "name": "link_to_architecture",
+              "in": "query"
+            }
+          ],
+          "requestBody": {
+            "description": "Documentation content in Markdown format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "title": "Documentation",
+                  "description": "Documentation content in Markdown format"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            },
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "boolean",
+                    "title": "Return",
+                    "description": "Whether the PDF documentation was generated successfully"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/getPDFDocumentationDetail": {
+        "get": {
+          "summary": "GET /getPDFDocumentationDetail",
+          "description": "Get details about the generated PDF documentation",
+          "operationId": "get_pdf_documentation_detail_getPDFDocumentationDetail_get",
+          "parameters": [
+            {
+              "description": "S3 URI of the PDF documentation",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "S3 Uri",
+                "description": "S3 URI of the PDF documentation"
+              },
+              "name": "s3_uri",
+              "in": "query"
+            }
+          ],
+          "responses": {
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            },
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object",
+                    "title": "Return",
+                    "description": "Details of the PDF documentation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/health": {
+        "get": {
+          "summary": "GET /health",
+          "description": "Check health status of the PDF documentation generator service",
+          "operationId": "health_check_health_get",
+          "responses": {
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            },
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "type": "object",
+                    "title": "Return",
+                    "description": "Health status of the service"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "HTTPValidationError": {
+          "properties": {
+            "detail": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationError"
+              },
+              "type": "array",
+              "title": "Detail"
+            }
+          },
+          "type": "object",
+          "title": "HTTPValidationError"
+        },
+        "ValidationError": {
+          "properties": {
+            "loc": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "array",
+              "title": "Location"
+            },
+            "type": {
+              "type": "string",
+              "title": "Error Type"
+            }
+          },
+          "type": "object",
+          "required": [
+            "loc",
+            "msg",
+            "type"
+          ],
+          "title": "ValidationError"
+        }
+      }
+    }
+  }

@@ -1,0 +1,102 @@
+# PDF Documentation Generator
+
+## Introduction
+
+This document demonstrates the capabilities of the PDF Documentation Generator service. It shows how Markdown content gets rendered into a professionally formatted PDF document.
+
+## Features
+
+The PDF Documentation Generator supports a wide range of Markdown features:
+
+### Text Formatting
+
+- **Bold text** for emphasis
+- *Italic text* for slight emphasis
+- ~~Strikethrough~~ for indicating removed content
+- `Inline code` for technical terms
+
+### Lists
+
+Ordered lists:
+
+1. First item
+2. Second item
+   1. Nested item one
+   2. Nested item two
+3. Third item
+
+Unordered lists:
+
+- Documentation
+- PDF Generation
+- Architecture Diagrams
+  - Embedding diagrams
+  - Scaling and positioning
+
+### Code Blocks
+
+```python
+def generate_pdf(markdown_content, diagram_uri=None):
+    """
+    Generate a PDF from Markdown content.
+    
+    Args:
+        markdown_content: The content to convert
+        diagram_uri: Optional S3 URI to a diagram
+        
+    Returns:
+        S3 URI of the generated PDF
+    """
+    # Convert Markdown to HTML
+    html = convert_to_html(markdown_content)
+    
+    # Add diagram if provided
+    if diagram_uri:
+        html = embed_diagram(html, diagram_uri)
+    
+    # Generate PDF from HTML
+    pdf = html_to_pdf(html)
+    
+    # Upload to S3
+    s3_uri = upload_to_s3(pdf)
+    
+    return s3_uri
+```
+
+### Tables
+
+| Feature | Description | Supported |
+|---------|-------------|-----------|
+| Markdown | Convert Markdown to HTML | ✅ |
+| Diagrams | Embed architecture diagrams | ✅ |
+| Tables | Format tables in the PDF | ✅ |
+| Code Blocks | Syntax highlighting | ✅ |
+| Math | Mathematical equations | ✅ |
+
+### Blockquotes
+
+> This is a blockquote.
+> 
+> It can contain multiple paragraphs.
+>
+> > Nested blockquotes are also supported.
+
+### Horizontal Rule
+
+---
+
+## Integration with Architecture Diagrams
+
+The service can embed architecture diagrams created with the Minigrammer service. When a diagram S3 URI is provided, the diagram is automatically embedded in the generated PDF.
+
+## Mathematical Equations
+
+The PDF generator supports LaTeX-style mathematical equations:
+
+The quadratic formula is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+
+Einstein's famous equation: $E = mc^2$
+
+## Conclusion
+
+This document demonstrates how the PDF Documentation Generator converts Markdown content into a well-formatted PDF document. The service is ideal for creating technical documentation, reports, and other documents that need to be shared in PDF format.

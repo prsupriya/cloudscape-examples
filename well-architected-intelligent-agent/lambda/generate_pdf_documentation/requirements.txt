@@ -1,0 +1,23 @@
+# Core Requirements
+flask
+boto3
+pydantic
+Jinja2
+markdown
+aws_xray_sdk
+
+# AWS Lambda PowerTools
+aws-lambda-powertools
+
+# PDF Generation Dependencies
+WeasyPrint
+cssselect2
+tinycss2
+cffi
+fonttools
+Pyphen
+# For PDF with images
+Pillow
+
+# Testing/Development
+requests

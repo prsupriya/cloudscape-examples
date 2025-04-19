@@ -1,0 +1,62 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Architecture Diagram Generator API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/generateDiagram": {
+        "post": {
+          "operationId": "generateDiagram",
+          "summary": "Generate architecture diagram",
+          "x-amazon-bedrock-agent-action": true,
+          "x-amazon-bedrock-agent-action-description": "Generates an AWS architecture diagram based on the provided description and services",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["description", "services"],
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "Detailed description of the architecture"
+                    },
+                    "services": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "Name of AWS service"
+                      },
+                      "description": "List of AWS services to include in the diagram"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successfully generated diagram",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": ["diagramUrl"],
+                    "properties": {
+                      "diagramUrl": {
+                        "type": "string",
+                        "description": "S3 URL of the generated diagram"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
